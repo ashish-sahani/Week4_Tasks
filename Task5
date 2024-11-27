@@ -2,34 +2,43 @@
 #include <memory>
 #include <vector>
 
+using namespace std;
+
+// Observer Pattern: ModeObserver Interface
 class ModeObserver {
 public:
-    virtual void update(const std::string& mode) = 0;
+    virtual void update(const string& mode) = 0;  // Pure virtual function to be implemented by derived classes
 };
 
+// Button Class implementing ModeObserver
 class Button : public ModeObserver {
 public:
-    void update(const std::string& mode) override {
+    void update(const string& mode) override {
         if (mode == "Night") {
-            std::cout << "Button: Adjusting visibility for Night mode.\n";
+            cout << "Button: Adjusting visibility for Night mode.\n";
         }
     }
 };
 
+// Factory Pattern: ControlFactory to create Button objects
 class ControlFactory {
 public:
-    static std::shared_ptr<Button> createButton() {
-        return std::make_shared<Button>();
+    // Factory method to create shared_ptr of Button
+    static shared_ptr<Button> createButton() {
+        return make_shared<Button>();
     }
 };
 
+// Singleton Pattern: HMISystem to manage the overall system state
 class HMISystem {
 private:
-    static std::unique_ptr<HMISystem> instance;
+    static unique_ptr<HMISystem> instance;  // Unique instance of HMISystem (Singleton)
 
-    HMISystem() {}  // Private constructor to prevent direct instantiation
+    // Private constructor to prevent direct instantiation
+    HMISystem() {}
 
 public:
+    // Method to get the unique instance of HMISystem (Singleton)
     static HMISystem* getInstance() {
         if (!instance) {
             instance.reset(new HMISystem());
@@ -37,22 +46,23 @@ public:
         return instance.get();
     }
 
-    void switchMode(const std::string& mode) {
-        std::cout << "Switching to " << mode << " mode...\n";
+    // Method to switch system modes (e.g., "Night" mode)
+    void switchMode(const string& mode) {
+        cout << "Switching to " << mode << " mode...\n";
     }
 };
 
 // Initialize the static member
-std::unique_ptr<HMISystem> HMISystem::instance = nullptr;
+unique_ptr<HMISystem> HMISystem::instance = nullptr;
 
 int main() {
-    // Singleton usage
-    HMISystem* hmiSystem = HMISystem::getInstance();
-    hmiSystem->switchMode("Night");
+    // Using the Singleton Pattern
+    HMISystem* hmiSystem = HMISystem::getInstance();  // Get the unique instance
+    hmiSystem->switchMode("Night");  // Switch the system to Night mode
 
-    // Factory usage
-    auto button = ControlFactory::createButton();
-    button->update("Night");
+    // Using the Factory Pattern
+    auto button = ControlFactory::createButton();  // Create a new Button using Factory
+    button->update("Night");  // Update the button state for Night mode
 
     return 0;
 }

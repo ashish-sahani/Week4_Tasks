@@ -3,32 +3,34 @@
 #include <set>
 #include <algorithm>
 
+using namespace std;
+
 int main() {
     // Initialize containers: dynamic and static widgets
-    std::vector<std::string> dynamicWidgets = {"Speedometer", "Tachometer", "GPS", "Compass", "FuelGauge"};
-    std::set<std::string> staticWidgets = {"Logo", "WarningLights", "HomeButton"};
+    vector<string> dynamicWidgets = {"Speedometer", "Tachometer", "GPS", "Compass", "FuelGauge"};
+    set<string> staticWidgets = {"Logo", "WarningLights", "HomeButton"};
 
     // 1. Print all dynamic widgets using iterator
-    std::cout << "Dynamic widgets:\n";
+    cout << "Dynamic widgets:\n";
     for (auto it = dynamicWidgets.begin(); it != dynamicWidgets.end(); ++it) {
-        std::cout << *it << std::endl;
+        cout << *it << endl;
     }
 
     // 2. Check if a specific widget exists in static widgets
     auto found = staticWidgets.find("WarningLights");
     if (found != staticWidgets.end()) {
-        std::cout << "\n'WarningLights' found in static widgets.\n";
+        cout << "\n'WarningLights' found in static widgets.\n";
     }
 
     // 3. Combine dynamic and static widgets into a new vector
-    std::vector<std::string> allWidgets;
-    std::copy(dynamicWidgets.begin(), dynamicWidgets.end(), std::back_inserter(allWidgets));
-    std::copy(staticWidgets.begin(), staticWidgets.end(), std::back_inserter(allWidgets));
+    vector<string> allWidgets;
+    copy(dynamicWidgets.begin(), dynamicWidgets.end(), back_inserter(allWidgets));
+    copy(staticWidgets.begin(), staticWidgets.end(), back_inserter(allWidgets));
 
     // 4. Use std::find to locate a specific widget in combined list
-    auto widget = std::find(allWidgets.begin(), allWidgets.end(), "Tachometer");
+    auto widget = find(allWidgets.begin(), allWidgets.end(), "Tachometer");
     if (widget != allWidgets.end()) {
-        std::cout << "\nFound 'Tachometer' in the combined list.\n";
+        cout << "\nFound 'Tachometer' in the combined list.\n";
     }
 
     return 0;

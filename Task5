@@ -1,0 +1,58 @@
+#include <iostream>
+#include <memory>
+#include <vector>
+
+class ModeObserver {
+public:
+    virtual void update(const std::string& mode) = 0;
+};
+
+class Button : public ModeObserver {
+public:
+    void update(const std::string& mode) override {
+        if (mode == "Night") {
+            std::cout << "Button: Adjusting visibility for Night mode.\n";
+        }
+    }
+};
+
+class ControlFactory {
+public:
+    static std::shared_ptr<Button> createButton() {
+        return std::make_shared<Button>();
+    }
+};
+
+class HMISystem {
+private:
+    static std::unique_ptr<HMISystem> instance;
+
+    HMISystem() {}  // Private constructor to prevent direct instantiation
+
+public:
+    static HMISystem* getInstance() {
+        if (!instance) {
+            instance.reset(new HMISystem());
+        }
+        return instance.get();
+    }
+
+    void switchMode(const std::string& mode) {
+        std::cout << "Switching to " << mode << " mode...\n";
+    }
+};
+
+// Initialize the static member
+std::unique_ptr<HMISystem> HMISystem::instance = nullptr;
+
+int main() {
+    // Singleton usage
+    HMISystem* hmiSystem = HMISystem::getInstance();
+    hmiSystem->switchMode("Night");
+
+    // Factory usage
+    auto button = ControlFactory::createButton();
+    button->update("Night");
+
+    return 0;
+}

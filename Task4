@@ -2,14 +2,18 @@
 #include <vector>
 #include <algorithm>
 
+using namespace std;
+
+// Control structure to represent a control with unique ID, type, and state
 struct Control {
-    int id;
-    std::string type;
-    std::string state;
+    int id;               // Unique ID
+    string type;          // "button" or "slider"
+    string state;         // "visible", "invisible", or "disabled"
 };
 
 int main() {
-    std::vector<Control> controls = {
+    // Initialize a vector of controls with different IDs, types, and states
+    vector<Control> controls = {
         {5, "button", "visible"},
         {1, "slider", "disabled"},
         {3, "slider", "visible"},
@@ -18,22 +22,24 @@ int main() {
     };
 
     // 1. Sorting by ID using std::sort
-    std::sort(controls.begin(), controls.end(), [](const Control& a, const Control& b) {
-        return a.id < b.id;
+    sort(controls.begin(), controls.end(), [](const Control& a, const Control& b) {
+        return a.id < b.id; // Sort by control ID in ascending order
     });
-    std::cout << "Sorted controls by ID:\n";
+    cout << "Sorted controls by ID:\n";
     for (const auto& ctrl : controls) {
-        std::cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << std::endl;
+        cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << endl;
     }
 
-    // 2. Merging two sorted lists
-    std::vector<Control> moreControls = {{6, "button", "visible"}, {7, "slider", "invisible"}};
-    std::vector<Control> mergedControls;
-    std::merge(controls.begin(), controls.end(), moreControls.begin(), moreControls.end(), std::back_inserter(mergedControls));
+    // 2. Merging two sorted lists of controls
+    vector<Control> moreControls = {{6, "button", "visible"}, {7, "slider", "invisible"}};
+    vector<Control> mergedControls;
 
-    std::cout << "\nMerged controls:\n";
+    // Merge the two sorted lists into a single list
+    merge(controls.begin(), controls.end(), moreControls.begin(), moreControls.end(), back_inserter(mergedControls));
+
+    cout << "\nMerged controls:\n";
     for (const auto& ctrl : mergedControls) {
-        std::cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << std::endl;
+        cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << endl;
     }
 
     return 0;

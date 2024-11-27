@@ -9,6 +9,11 @@ struct Control {
     int id;               // Unique ID
     string type;          // "button" or "slider"
     string state;         // "visible", "invisible", or "disabled"
+
+    // Define the < operator to compare by 'id'
+    bool operator<(const Control& other) const {
+        return id < other.id;
+    }
 };
 
 int main() {
@@ -22,9 +27,7 @@ int main() {
     };
 
     // 1. Sorting by ID using std::sort
-    sort(controls.begin(), controls.end(), [](const Control& a, const Control& b) {
-        return a.id < b.id; // Sort by control ID in ascending order
-    });
+    sort(controls.begin(), controls.end());  // Now sorts by 'id' due to the operator< being defined
     cout << "Sorted controls by ID:\n";
     for (const auto& ctrl : controls) {
         cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << endl;
@@ -32,6 +35,10 @@ int main() {
 
     // 2. Merging two sorted lists of controls
     vector<Control> moreControls = {{6, "button", "visible"}, {7, "slider", "invisible"}};
+    
+    // Sort moreControls by ID to ensure that both lists are sorted before merging
+    sort(moreControls.begin(), moreControls.end()); // Now sorts by 'id' due to the operator< being defined
+
     vector<Control> mergedControls;
 
     // Merge the two sorted lists into a single list

@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+// Control structure to represent a control with unique ID, type, and state
+struct Control {
+    int id;               // Unique ID
+    std::string type;     // "button" or "slider"
+    std::string state;    // "visible", "invisible", "disabled"
+};
+
+int main() {
+    // Initialize a vector of controls
+    std::vector<Control> controls = {
+        {1, "button", "visible"},
+        {2, "button", "invisible"},
+        {3, "button", "disabled"},
+        {4, "slider", "visible"},
+        {5, "slider", "invisible"},
+        {6, "slider", "disabled"},
+        {7, "button", "disabled"},
+        {8, "button", "visible"},
+        {9, "slider", "visible"},
+        {10, "slider", "disabled"}
+    };
+
+    // 1. std::for_each: Iterate through all controls and print details
+    std::cout << "All controls:\n";
+    std::for_each(controls.begin(), controls.end(), [](const Control& ctrl) {
+        std::cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << std::endl;
+    });
+
+    // 2. std::find: Find a control with a specific ID
+    auto it = std::find_if(controls.begin(), controls.end(), [](const Control& ctrl) { return ctrl.id == 5; });
+    if (it != controls.end()) {
+        std::cout << "\nFound control with ID 5: Type: " << it->type << ", State: " << it->state << std::endl;
+    }
+
+    // 3. std::find_if: Find the first invisible control
+    auto invisibleControl = std::find_if(controls.begin(), controls.end(), [](const Control& ctrl) {
+        return ctrl.state == "invisible";
+    });
+    if (invisibleControl != controls.end()) {
+        std::cout << "\nFirst invisible control: ID " << invisibleControl->id << ", Type: " << invisibleControl->type << std::endl;
+    }
+
+    // 4. std::adjacent_find: Check for consecutive controls with the same state
+    auto adjacentSameState = std::adjacent_find(controls.begin(), controls.end(), [](const Control& a, const Control& b) {
+        return a.state == b.state;
+    });
+    if (adjacentSameState != controls.end()) {
+        std::cout << "\nFound consecutive controls with the same state: ID " << adjacentSameState->id << ", State: " << adjacentSameState->state << std::endl;
+    }
+
+    // 5. std::count: Count the number of visible controls
+    int visibleCount = std::count_if(controls.begin(), controls.end(), [](const Control& ctrl) {
+        return ctrl.state == "visible";
+    });
+    std::cout << "\nNumber of visible controls: " << visibleCount << std::endl;
+
+    // 6. std::count_if: Count sliders that are disabled
+    int disabledSliders = std::count_if(controls.begin(), controls.end(), [](const Control& ctrl) {
+        return ctrl.type == "slider" && ctrl.state == "disabled";
+    });
+    std::cout << "Number of disabled sliders: " << disabledSliders << std::endl;
+
+    return 0;
+}

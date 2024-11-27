@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
+struct Control {
+    int id;
+    std::string type;
+    std::string state;
+};
+
+int main() {
+    std::vector<Control> controls = {
+        {1, "button", "visible"},
+        {2, "slider", "invisible"},
+        {3, "button", "disabled"},
+        {4, "slider", "visible"},
+        {5, "slider", "invisible"}
+    };
+
+    // 1. Create a backup of the control list
+    std::vector<Control> controlsBackup = controls;
+
+    // 2. Use std::fill to set all states to "disabled"
+    std::fill(controls.begin(), controls.end(), Control{0, "", "disabled"});
+    std::cout << "After filling with 'disabled':\n";
+    for (const auto& ctrl : controls) {
+        std::cout << ctrl.state << " ";
+    }
+    std::cout << std::endl;
+
+    // 3. Use std::generate to generate random states
+    std::srand(std::time(0)); // seed for randomness
+    std::generate(controls.begin(), controls.end(), []() {
+        int randState = std::rand() % 3;
+        if (randState == 0) return Control{0, "", "visible"};
+        if (randState == 1) return Control{0, "", "invisible"};
+        return Control{0, "", "disabled"};
+    });
+    std::cout << "After generating random states:\n";
+    for (const auto& ctrl : controls) {
+        std::cout << ctrl.state << " ";
+    }
+    std::cout << std::endl;
+
+    // 4. Use std::transform to change all sliders to "invisible"
+    std::transform(controls.begin(), controls.end(), controls.begin(), [](Control& ctrl) {
+        if (ctrl.type == "slider") ctrl.state = "invisible";
+        return ctrl;
+    });
+    std::cout << "After transforming sliders to invisible:\n";
+    for (const auto& ctrl : controls) {
+        std::cout << ctrl.state << " ";
+    }
+    std::cout << std::endl;
+
+    // 5. Use std::replace to replace "disabled" with "enabled"
+    std::replace_if(controls.begin(), controls.end(), [](const Control& ctrl) { return ctrl.state == "disabled"; }, Control{0, "", "enabled"});
+    std::cout << "After replacing 'disabled' with 'enabled':\n";
+    for (const auto& ctrl : controls) {
+        std::cout << ctrl.state << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}

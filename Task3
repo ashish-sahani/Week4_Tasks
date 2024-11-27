@@ -4,14 +4,18 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace std;
+
+// Control structure to represent a control with unique ID, type, and state
 struct Control {
-    int id;
-    std::string type;
-    std::string state;
+    int id;               // Unique ID
+    string type;          // "button" or "slider"
+    string state;         // "visible", "invisible", "disabled"
 };
 
 int main() {
-    std::vector<Control> controls = {
+    // Initialize a vector of controls with various types and states
+    vector<Control> controls = {
         {1, "button", "visible"},
         {2, "slider", "invisible"},
         {3, "button", "disabled"},
@@ -20,48 +24,48 @@ int main() {
     };
 
     // 1. Create a backup of the control list
-    std::vector<Control> controlsBackup = controls;
+    vector<Control> controlsBackup = controls;
 
     // 2. Use std::fill to set all states to "disabled"
-    std::fill(controls.begin(), controls.end(), Control{0, "", "disabled"});
-    std::cout << "After filling with 'disabled':\n";
+    fill(controls.begin(), controls.end(), Control{0, "", "disabled"});
+    cout << "After filling with 'disabled':\n";
     for (const auto& ctrl : controls) {
-        std::cout << ctrl.state << " ";
+        cout << ctrl.state << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
-    // 3. Use std::generate to generate random states
-    std::srand(std::time(0)); // seed for randomness
-    std::generate(controls.begin(), controls.end(), []() {
-        int randState = std::rand() % 3;
+    // 3. Use std::generate to generate random states for each control
+    srand(time(0)); // seed for randomness
+    generate(controls.begin(), controls.end(), []() {
+        int randState = rand() % 3;
         if (randState == 0) return Control{0, "", "visible"};
         if (randState == 1) return Control{0, "", "invisible"};
         return Control{0, "", "disabled"};
     });
-    std::cout << "After generating random states:\n";
+    cout << "After generating random states:\n";
     for (const auto& ctrl : controls) {
-        std::cout << ctrl.state << " ";
+        cout << ctrl.state << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     // 4. Use std::transform to change all sliders to "invisible"
-    std::transform(controls.begin(), controls.end(), controls.begin(), [](Control& ctrl) {
+    transform(controls.begin(), controls.end(), controls.begin(), [](Control& ctrl) {
         if (ctrl.type == "slider") ctrl.state = "invisible";
         return ctrl;
     });
-    std::cout << "After transforming sliders to invisible:\n";
+    cout << "After transforming sliders to invisible:\n";
     for (const auto& ctrl : controls) {
-        std::cout << ctrl.state << " ";
+        cout << ctrl.state << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
-    // 5. Use std::replace to replace "disabled" with "enabled"
-    std::replace_if(controls.begin(), controls.end(), [](const Control& ctrl) { return ctrl.state == "disabled"; }, Control{0, "", "enabled"});
-    std::cout << "After replacing 'disabled' with 'enabled':\n";
+    // 5. Use std::replace_if to replace "disabled" state with "enabled"
+    replace_if(controls.begin(), controls.end(), [](const Control& ctrl) { return ctrl.state == "disabled"; }, Control{0, "", "enabled"});
+    cout << "After replacing 'disabled' with 'enabled':\n";
     for (const auto& ctrl : controls) {
-        std::cout << ctrl.state << " ";
+        cout << ctrl.state << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     return 0;
 }

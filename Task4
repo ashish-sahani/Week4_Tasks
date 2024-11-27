@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+struct Control {
+    int id;
+    std::string type;
+    std::string state;
+};
+
+int main() {
+    std::vector<Control> controls = {
+        {5, "button", "visible"},
+        {1, "slider", "disabled"},
+        {3, "slider", "visible"},
+        {4, "button", "invisible"},
+        {2, "slider", "disabled"}
+    };
+
+    // 1. Sorting by ID using std::sort
+    std::sort(controls.begin(), controls.end(), [](const Control& a, const Control& b) {
+        return a.id < b.id;
+    });
+    std::cout << "Sorted controls by ID:\n";
+    for (const auto& ctrl : controls) {
+        std::cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << std::endl;
+    }
+
+    // 2. Merging two sorted lists
+    std::vector<Control> moreControls = {{6, "button", "visible"}, {7, "slider", "invisible"}};
+    std::vector<Control> mergedControls;
+    std::merge(controls.begin(), controls.end(), moreControls.begin(), moreControls.end(), std::back_inserter(mergedControls));
+
+    std::cout << "\nMerged controls:\n";
+    for (const auto& ctrl : mergedControls) {
+        std::cout << "ID: " << ctrl.id << ", Type: " << ctrl.type << ", State: " << ctrl.state << std::endl;
+    }
+
+    return 0;
+}
